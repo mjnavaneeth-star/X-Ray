@@ -1,0 +1,48 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User profile with preferences and personal sensitivity watchlist",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 256 },
+        "photoURL": { "type": "string", "maxLength": 1024 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "preferences": { "type": "object" }
+      },
+      "required": ["uid"]
+    },
+    "ScanRecord": {
+      "title": "Scan Record",
+      "description": "Comprehensive product scan record with 3 intelligence stages, verdict, chat history, and outcome",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 64 },
+        "inputType": { "type": "string", "enum": ["url", "image", "both"] },
+        "rawInputUrl": { "type": "string", "maxLength": 2048 },
+        "imageBase64": { "type": "string" },
+        "inside": { "type": "object" },
+        "data": { "type": "object" },
+        "forYou": { "type": "object" },
+        "verdict": { "type": "object" },
+        "conversation": { "type": "array" },
+        "outcome": { "type": "object" }
+      },
+      "required": ["id", "userId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User document storing preferences and settings"
+    },
+    "/users/{userId}/scans/{scanId}": {
+      "schema": "ScanRecord",
+      "description": "Collection of scans executed by the user"
+    }
+  }
+}

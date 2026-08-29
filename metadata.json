@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix X-Ray",
+  "description": "User-authenticated product analysis and personal reaction tracking powered by Gemini and Firestore.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

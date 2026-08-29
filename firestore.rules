@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper function to check if user is authenticated and owner
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Test connection doc
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // User profile documents
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      // User scans subcollection
+      match /scans/{scanId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // User custom watchlists or reaction logs
+      match /reactions/{reactionId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}
+
